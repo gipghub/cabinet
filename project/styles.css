@@ -1,0 +1,349 @@
+/* ─── tokens ─────────────────────────────────────────────── */
+:root {
+  --bg:        #eef4f3;
+  --paper:    #faf7ef;
+  --paper-2:  #f3efe2;
+  --ink:      #13322b;
+  --ink-soft: #4b6760;
+  --ink-mute: #87a098;
+  --line:     rgba(19, 50, 43, 0.10);
+  --line-2:   rgba(19, 50, 43, 0.05);
+
+  --sage:        #2f6b5f;
+  --sage-deep:   #1b3f37;
+  --sage-soft:   #a8dccb;
+  --sage-fade:   #d8ebe2;
+
+  --wood:        #cdb98e;
+  --wood-light:  #e3d6b5;
+  --wood-dark:   #8d7a55;
+  --shelf-edge:  #b8a075;
+
+  --warn:        #c97a3a;
+  --danger:      #b94838;
+  --good:        #4f8a6a;
+
+  --label-cream: #f4ead4;
+  --label-line:  #b29764;
+
+  --font-body: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: 'Instrument Serif', 'Newsreader', Georgia, serif;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
+}
+
+/* ─── reset basics ───────────────────────────────────────── */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: #d6dfdc;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+button { font-family: inherit; color: inherit; }
+
+/* ─── app shell ──────────────────────────────────────────── */
+.app {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  overflow: hidden;
+}
+.app-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  position: relative;
+}
+.app-scroll::-webkit-scrollbar { display: none; }
+
+/* status-bar spacer */
+.app-statusbar { height: 60px; flex-shrink: 0; }
+
+/* ─── nav bar (top) ──────────────────────────────────────── */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 18px 14px;
+}
+.navbar .nav-title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  letter-spacing: -0.5px;
+  line-height: 1;
+  color: var(--ink);
+  font-weight: 400;
+  white-space: nowrap;
+}
+.navbar .nav-sub {
+  font-size: 12px;
+  color: var(--ink-mute);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+.navbar-back {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--paper);
+  display: flex; align-items: center; justify-content: center;
+  border: 0.5px solid var(--line);
+  flex-shrink: 0;
+}
+.navbar-action {
+  height: 36px; padding: 0 12px;
+  border-radius: 18px;
+  background: var(--paper);
+  display: flex; align-items: center; gap: 6px;
+  border: 0.5px solid var(--line);
+  font-size: 13px; font-weight: 500;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ─── tab bar (bottom) ───────────────────────────────────── */
+.tabbar {
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 20px 28px;
+  background: rgba(238, 244, 243, 0.92);
+  -webkit-backdrop-filter: blur(28px) saturate(140%);
+  backdrop-filter: blur(28px) saturate(140%);
+  border-top: 0.5px solid var(--line);
+}
+.tab {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 4px;
+  background: none; border: 0; padding: 6px 0;
+  color: var(--ink-mute);
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.tab.active { color: var(--sage-deep); }
+.tab .tab-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--sage); margin-top: 2px;
+  opacity: 0;
+}
+.tab.active .tab-dot { opacity: 1; }
+
+/* FAB scan button */
+.fab-scan {
+  position: absolute;
+  bottom: 60px; left: 50%;
+  transform: translateX(-50%);
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: var(--sage-deep);
+  color: var(--paper);
+  border: 4px solid var(--bg);
+  box-shadow: 0 8px 24px rgba(19, 50, 43, 0.3);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2;
+}
+
+/* ─── card / section ─────────────────────────────────────── */
+.card {
+  background: var(--paper);
+  border-radius: 22px;
+  padding: 18px;
+  border: 0.5px solid var(--line);
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.3px;
+  color: var(--ink);
+  line-height: 1.1;
+  margin: 0 0 12px;
+  white-space: nowrap;
+}
+.section-eyebrow {
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  font-weight: 600;
+}
+
+/* ─── pills / chips ──────────────────────────────────────── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px; padding: 0 8px;
+  border-radius: 11px;
+  font-size: 11px; font-weight: 500;
+  background: var(--sage-fade);
+  color: var(--sage-deep);
+  letter-spacing: 0.02em;
+}
+.chip.warn { background: #f5e4d2; color: #8a4d1d; }
+.chip.danger { background: #f3d8d4; color: #7a261d; }
+.chip.muted { background: var(--paper-2); color: var(--ink-mute); }
+.chip.outline { background: transparent; border: 0.5px solid var(--line); }
+
+/* ─── buttons ────────────────────────────────────────────── */
+.btn {
+  height: 44px;
+  border-radius: 14px;
+  background: var(--sage-deep);
+  color: var(--paper);
+  border: 0;
+  font-size: 15px; font-weight: 500;
+  letter-spacing: 0.01em;
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+.btn.ghost {
+  background: transparent;
+  color: var(--sage-deep);
+  border: 1px solid var(--line);
+}
+.btn.soft {
+  background: var(--sage-fade);
+  color: var(--sage-deep);
+}
+
+/* ─── modal sheet ────────────────────────────────────────── */
+.sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(19, 50, 43, 0.36);
+  z-index: 100;
+  display: flex; align-items: flex-end;
+}
+.sheet {
+  width: 100%;
+  background: var(--bg);
+  border-radius: 28px 28px 0 0;
+  padding: 18px 18px 32px;
+  max-height: 90%;
+  display: flex; flex-direction: column;
+}
+.sheet-handle {
+  width: 36px; height: 4px; border-radius: 2px;
+  background: rgba(19,50,43,0.18);
+  margin: 0 auto 14px;
+}
+.sheet-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  margin: 0 0 4px;
+  letter-spacing: -0.3px;
+}
+.sheet-sub {
+  font-size: 13px;
+  color: var(--ink-mute);
+  margin: 0 0 18px;
+}
+
+/* ─── form fields ────────────────────────────────────────── */
+.field {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.field-label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  font-weight: 600;
+}
+.field-input {
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 12px;
+  background: var(--paper);
+  border: 0.5px solid var(--line);
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  outline: none;
+}
+.field-input:focus { border-color: var(--sage); }
+.field-row { display: flex; gap: 10px; }
+.field-row .field { flex: 1; }
+
+/* segmented control */
+.segmented {
+  display: flex;
+  background: var(--paper-2);
+  border-radius: 12px;
+  padding: 3px;
+  position: relative;
+}
+.segmented button {
+  flex: 1; height: 36px;
+  border: 0; background: transparent;
+  font-size: 13px; font-weight: 500;
+  color: var(--ink-soft);
+  border-radius: 9px;
+  position: relative;
+  z-index: 1;
+}
+.segmented button.on {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(19,50,43,0.08);
+}
+
+/* ─── helpers ────────────────────────────────────────────── */
+.row { display: flex; align-items: center; }
+.col { display: flex; flex-direction: column; }
+.spacer { flex: 1; }
+.mono { font-family: var(--font-mono); }
+.serif { font-family: var(--font-display); }
+
+/* ─── screen transitions ─────────────────────────────────── */
+.screen {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.screen-enter {
+  /* animation removed — was unreliable when iframe wasn't focused */
+}
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* sheet entry — no animations; final state is the resting state */
+.sheet-enter { }
+.sheet-backdrop-enter { }
+@keyframes sheetIn {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* shimmer for scan */
+@keyframes scanShimmer {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.6; transform: scale(1.04); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
