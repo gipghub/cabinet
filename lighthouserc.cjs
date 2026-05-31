@@ -5,7 +5,7 @@ module.exports = {
   ci: {
     collect: {
       staticDistDir: './_site',
-      url: ['http://localhost/cabinet/index.html'],
+      url: ['http://localhost/cabinet/'],
       numberOfRuns: 1,
       settings: { preset: 'desktop' },
     },
