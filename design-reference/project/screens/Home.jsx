@@ -8,6 +8,14 @@ function HomeScreen({ go, openDose }) {
     { label: 'Pain & Fever',   sub: 'As needed',            meds: meds.filter(m => m.shelf === 0) },
   ];
 
+  // dynamic date & greeting
+  const now = new Date();
+  const DAY_NAMES  = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const MON_NAMES  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const dateStr = `${DAY_NAMES[now.getDay()]} · ${MON_NAMES[now.getMonth()]} ${now.getDate()}`;
+  const h = now.getHours();
+  const greeting = h < 5 ? 'Good night' : h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+
   // quick stats
   const dosesToday = 3;
   const lowStock = meds.filter(m => m.stock / m.fullStock < 0.2).length;
@@ -37,7 +45,7 @@ function HomeScreen({ go, openDose }) {
         }} />
         <div style={{ position: 'relative' }}>
           <div style={{ fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--ink-soft)', fontWeight: 600 }}>
-            Wednesday · May 27
+            {dateStr}
           </div>
           <div style={{
             fontFamily: 'var(--font-display)',
@@ -48,7 +56,7 @@ function HomeScreen({ go, openDose }) {
             marginTop: 6,
             marginBottom: 14,
           }}>
-            Good morning,<br/><span style={{ fontStyle: 'italic' }}>Sam.</span>
+            {greeting},<br/><span style={{ fontStyle: 'italic' }}>let's check in.</span>
           </div>
           <div style={{ display: 'flex', gap: 14 }}>
             <Stat n={dosesToday} label="doses today" />
@@ -75,7 +83,7 @@ function HomeScreen({ go, openDose }) {
           letterSpacing: '0.04em',
         }}>
           <div style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontSize: 14, color: 'var(--ink-soft)' }}>
-            11 medicines · 2 shelves with room
+            {meds.length} medicines · 3 shelves
           </div>
           <button
             onClick={() => go('add')}

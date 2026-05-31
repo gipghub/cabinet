@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+<title>Cabinet — OTC Tracker</title>
+
+<meta name="theme-color" content="#1b3f37" />
+<meta name="application-name" content="Cabinet" />
+<meta name="description" content="A calm apothecary cabinet for the over-the-counter medicines you keep at home." />
+
+<!-- iOS standalone -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Cabinet" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="icon-32.png" />
+
+<!-- Set standalone class as early as possible to avoid a layout flash -->
+<script>
+  (function () {
+    var embedded;
+    try { embedded = window.self !== window.top; } catch (e) { embedded = true; }
+    var standalone = !embedded && (
+      window.matchMedia('(display-mode: standalone)').matches ||
+      window.matchMedia('(display-mode: fullscreen)').matches ||
+      window.navigator.standalone === true
+    );
+    document.documentElement.classList.toggle('standalone', standalone);
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div id="root"></div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
