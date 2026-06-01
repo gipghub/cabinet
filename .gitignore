@@ -1,6 +1,7 @@
 node_modules
 dist
 dist-ssr
+_site
 *.local
 .DS_Store
 .eslintcache

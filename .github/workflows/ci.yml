@@ -63,7 +63,7 @@ jobs:
           retention-days: 7
 
   lighthouse:
-    name: Lighthouse PWA
+    name: Lighthouse Budgets
     runs-on: ubuntu-latest
     needs: build
     steps:

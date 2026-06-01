@@ -5,7 +5,9 @@
   --paper-2:  #f3efe2;
   --ink:      #13322b;
   --ink-soft: #4b6760;
-  --ink-mute: #87a098;
+  /* Darkened from the prototype's #87a098 (2.5:1 — fails WCAG AA) to clear
+     4.5:1 on bg/paper/paper-2 for body text. Same sage-grey hue. */
+  --ink-mute: #586c62;
   --line:     rgba(19, 50, 43, 0.10);
   --line-2:   rgba(19, 50, 43, 0.05);
 
