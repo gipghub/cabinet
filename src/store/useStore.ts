@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { get as idbGet, set as idbSet } from 'idb-keyval';
 import { MEDICINES, todayISO } from '../data/medicines';
+import { requestPersistentStorage } from '../lib/storage';
 import type { Medicine, SymptomKey } from '../data/types';
 
 export interface DoseEntry {
@@ -63,6 +64,10 @@ export const useStore = create<CabinetState>((set, get) => ({
   hydrated: false,
 
   hydrate: async () => {
+    // Ask the browser to keep our IndexedDB data durable (not evicted under
+    // storage pressure / inactivity). Best-effort; never blocks hydration.
+    void requestPersistentStorage();
+
     let saved: PersistShape | undefined;
     try {
       saved = await idbGet<PersistShape>(IDB_KEY);
