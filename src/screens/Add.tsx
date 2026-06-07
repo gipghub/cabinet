@@ -1,12 +1,22 @@
 import { useState } from 'react';
 import { Bottle } from '../components/Bottle';
 import { Icon } from '../components/Icon';
+import { useStore } from '../store/useStore';
+import { daysFromNow } from '../data/medicines';
+import type { Medicine, PresetName } from '../data/types';
 import type { Go } from '../types/nav';
 
 const FORMS = ['tablet', 'caplet', 'softgel', 'chewable', 'liquid', 'powder'];
 const SHELVES = ['Daily', 'Allergy & Cold', 'Pain & Fever'];
+// Shelf label → index used by the data model (matches Home's shelf grouping).
+const SHELF_INDEX: Record<string, number> = { 'Pain & Fever': 0, 'Allergy & Cold': 1, Daily: 2 };
+// Cycle bottle presets so new medicines get varied, on-brand artwork.
+const PRESET_CYCLE: PresetName[] = ['green', 'navy', 'amber', 'teal', 'mustard', 'pink', 'slate', 'red', 'white'];
 
 export function AddScreen({ go }: { go: Go }) {
+  const medicines = useStore((s) => s.medicines);
+  const addMedicine = useStore((s) => s.addMedicine);
+
   const [name, setName] = useState('');
   const [active, setActive] = useState('');
   const [strength, setStrength] = useState('');
@@ -17,6 +27,49 @@ export function AddScreen({ go }: { go: Go }) {
   const [shelf, setShelf] = useState('Daily');
 
   const valid = name.length > 1;
+
+  const save = () => {
+    if (!valid) return;
+
+    const shelfIdx = SHELF_INDEX[shelf] ?? 2;
+    // First free slot (0–3) on the chosen shelf; fall back to 0 if full.
+    const used = new Set(medicines.filter((m) => m.shelf === shelfIdx).map((m) => m.slot));
+    let slot = 0;
+    while (slot < 4 && used.has(slot)) slot += 1;
+    if (slot >= 4) slot = 0;
+
+    const stockNum = Math.max(0, parseInt(stock, 10) || 0);
+    const doseNum = Math.max(0, parseFloat(strength) || 0);
+    // Accept "2026-08" or a full ISO date; default to ~1 year out if blank.
+    const expiresISO = expires.trim()
+      ? (expires.length === 7 ? `${expires}-01` : expires)
+      : daysFromNow(365);
+
+    const med: Medicine = {
+      id: `user-${Date.now()}`,
+      name: name.trim(),
+      sub: active.trim() || form,
+      active: active.trim() || name.trim(),
+      dose: doseNum,
+      doseUnit: unit,
+      form,
+      perDose: 1,
+      dailyMax: 0,
+      dailyMaxMg: 0,
+      stock: stockNum,
+      fullStock: stockNum > 0 ? stockNum : 1,
+      expires: expiresISO,
+      shelf: shelfIdx,
+      slot,
+      preset: PRESET_CYCLE[medicines.length % PRESET_CYCLE.length],
+      interactions: [],
+      history: new Array(28).fill(0),
+      notes: '',
+    };
+
+    addMedicine(med);
+    go('detail', med.id);
+  };
 
   return (
     <div className="screen" style={{ background: 'var(--bg)' }}>
@@ -82,7 +135,7 @@ export function AddScreen({ go }: { go: Go }) {
           </div>
         )}
 
-        <button className="btn" disabled={!valid} onClick={() => go('home')} style={{ opacity: valid ? 1 : 0.4 }}>
+        <button className="btn" disabled={!valid} onClick={save} style={{ opacity: valid ? 1 : 0.4 }}>
           <Icon name="check" size={18} /> Add to cabinet
         </button>
       </div>
